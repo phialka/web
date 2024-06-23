@@ -4,10 +4,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 const routes = [
     
 ]
-
-const router = createRouter({
+export default createRouter({
     history: createMemoryHistory(),
     routes
 })
-
-export default router

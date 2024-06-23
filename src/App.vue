@@ -1,3 +1,42 @@
+<script setup>
+  import HeaderComponent from './components/HeaderComponent.vue'
+  import MessagesHeaderComponent from './components/messages/MessagesHeaderComponent.vue'
+  import MessagesFooterComponent from './components/messages/MessagesFooterComponent.vue'
+  // import { useStore } from 'vuex'
+
+  // import { useMousePosition } from './composables/mouse_position'
+
+  const styleControls = {
+
+        '--header-height': '70px',
+
+        '--domens-width': '100px',
+        '--chats-width': '200px',
+
+        '--messages-header-height': '60px',
+        '--messages-footer-height': '50px',
+
+        '--gray-3': 'rgb(20, 20, 20)',
+        '--gray-2': 'rgb(30, 30, 30)',
+        '--gray-1': 'rgb(50, 50, 50)',
+        '--gray-0': 'rgb(80, 80, 80)',
+  }
+  // const {mouseX, mouseY} = useMousePosition(window)
+
+  // const store = useStore()
+
+  // store.dispatch('auth', {
+  //   login: 'valentine',
+  //   password: 'mega_backender228',
+  // })
+
+  // store.dispatch('authRefresh', {
+  //   refresh: store.state.auth.refresh
+  // })
+
+</script>
+
+
 <template>
   <div class="style-controls" :style="styleControls">
     <header-component></header-component>
@@ -13,39 +52,6 @@
   </div>
 </template>
 
-<script>
-  import HeaderComponent from './components/HeaderComponent.vue'
-  import MessagesHeaderComponent from './components/messages/MessagesHeaderComponent.vue'
-  import MessagesFooterComponent from './components/messages/MessagesFooterComponent.vue'
-
-  export default {
-    components: {
-      HeaderComponent,
-      MessagesHeaderComponent,
-      MessagesFooterComponent
-    },
-    data () {
-      return {
-        styleControls: {
-
-          '--header-height': '70px',
-
-          '--domens-width': '100px',
-          '--chats-width': '200px',
-
-          '--messages-header-height': '60px',
-          '--messages-footer-height': '50px',
-
-          '--gray-3': 'rgb(20, 20, 20)',
-          '--gray-2': 'rgb(30, 30, 30)',
-          '--gray-1': 'rgb(50, 50, 50)',
-          '--gray-0': 'rgb(80, 80, 80)',
-
-        }
-      }
-    }
-  }
-</script>
 
 <style>
 
