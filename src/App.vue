@@ -1,101 +1,243 @@
 <script setup>
-  import HeaderComponent from './components/HeaderComponent.vue'
-  import MessagesHeaderComponent from './components/messages/MessagesHeaderComponent.vue'
-  import MessagesFooterComponent from './components/messages/MessagesFooterComponent.vue'
-  // import { useStore } from 'vuex'
+import { computed, provide } from 'vue';
+import HeaderLayout from '@/layouts/HeaderLayout.vue';
+import { useVuelidate } from '@vuelidate/core'
+import { helpers, required, minLength, maxLength } from '@vuelidate/validators';
+import { RouterView } from 'vue-router';
+import { useStore } from './store/store';
 
-  // import { useMousePosition } from './composables/mouse_position'
 
-  const styleControls = {
+//================================= VAR DEFINITION =================================
 
-        '--header-height': '70px',
+const store = useStore()
+const profileForm = store.profileForm
+const style = {
 
-        '--domens-width': '100px',
-        '--chats-width': '200px',
+    '--header-height': '70px',
 
-        '--messages-header-height': '60px',
-        '--messages-footer-height': '50px',
+    '--domens-width': '100px',
+    '--chats-width': '200px',
 
-        '--gray-3': 'rgb(20, 20, 20)',
-        '--gray-2': 'rgb(30, 30, 30)',
-        '--gray-1': 'rgb(50, 50, 50)',
-        '--gray-0': 'rgb(80, 80, 80)',
-  }
-  // const {mouseX, mouseY} = useMousePosition(window)
+    '--messages-header-height': '60px',
+    '--messages-footer-height': '50px',
 
-  // const store = useStore()
+    '--color-bg': 'rgb(5, 5, 5)',
+    '--color-bg-0': 'rgb(20, 20, 20)',
+    '--color-bg-1': 'rgb(30, 30, 30)',
+    '--color-bg-2': 'rgb(50, 50, 50)',
+    '--color-bg-3': 'rgb(80, 80, 80)',
+    '--color-0': 'rgb(140, 140, 140)',
+    '--color-1': 'rgb(200, 200, 200)',
+    '--color-2': 'rgb(240,240,240)',
+    '--color-btn': 'var(--color-2)',
+    '--color-btn-alt': 'var(--color-0)',
+    '--color-btn-hvr': 'var(--color-bg-3)',
+    '--color-text-0': 'var(--color-bg)',
+    '--color-text-1': 'var(--color-bg-1)',
+    '--color-text-2': 'var(--color-0)',
+    '--color-text-3': 'var(--color-2)',
+    '--color-fcs-glow': 'rgba(240, 240, 240, 0.3)',
+    '--color-err': 'rgb(240, 30, 30)',
+    '--color-err-glow': 'rgba(240, 30, 30, 0.6)',
+    '--color-shadow': 'rgba(5, 5, 5, 0.6)',
 
-  // store.dispatch('auth', {
-  //   login: 'valentine',
-  //   password: 'mega_backender228',
-  // })
+    
+}
 
-  // store.dispatch('authRefresh', {
-  //   refresh: store.state.auth.refresh
-  // })
+
+//================================= VALIDATION =================================
+
+const profileValidationRules = computed(() => ({
+    name: {
+        required: helpers.withMessage('Required', required)
+    },
+    login: {
+        required: helpers.withMessage('Required', required),
+        minLength: helpers.withMessage('It must be at least 5 characters', minLength(5)),
+        maxLength: helpers.withMessage('It must be less than 15 characters', maxLength(15))
+    },
+    password: {
+        required: helpers.withMessage('Required', required),
+        minLength: helpers.withMessage('It must be at least 8 characters', minLength(8)),
+        maxLength: helpers.withMessage('It must be less than 20 characters', maxLength(20))
+    },
+}))
+
+const profileValidator = useVuelidate(profileValidationRules, profileForm)
+
+//================================= PROPS PROVIDING =================================
+
+provide('profileValidator', profileValidator)
+
+
+//================================= CALLS =================================
+
 
 </script>
 
 
 <template>
-  <div class="style-controls" :style="styleControls">
-    <header-component></header-component>
-    <div class="parent-area">
-      <div class="domens-area"></div>
-      <div class="chats-area"></div>
-      <div class="messages-area">
-        <messages-header-component></messages-header-component>
-        <div class="messages"></div>
-        <messages-footer-component></messages-footer-component>
-      </div>
+    <div :style="style">
+        <header-layout></header-layout>
+        <aside></aside>
+        <router-view/>
     </div>
-  </div>
 </template>
 
 
 <style>
 
-  body {
+:root {
+    font-family: "LXGW WenKai Mono TC", monospace;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
     margin: 0 0;
-  }
+    overflow: hidden;
+}
 
-  #app {
+#app>div {
     height: 100vh;
-  }
+    width: 100vw;
+    display: grid;
+    grid-template-areas: 'header header' 'aside main';
+    grid-template-columns: 20% 1fr;
+    grid-template-rows: var(--header-height) 1fr;
+}
 
-  .style-controls {
-    height: 100%;
-  }
+header {
+    grid-area: header;
+}
 
-  .parent-area {
-    height: calc(100% - var(--header-height));
+aside {
+    grid-area: aside;
     display: flex;
-  }
+    background-color: var(--color-bg-2);
+}
 
-  .parent-area > div{
-    height: 100%;
-  }
+[popover] {
+    background-color: var(--color-bg-1);
+    border: 2px solid var(--color-2);
+    border-radius: 3%;
+}
 
-  .domens-area {
-    width: var(--domens-width);
-    background-color: var(--gray-2);
-  }
+[popover]::backdrop {
+    background-color: var(--color-shadow);
+    backdrop-filter: blur(10px);
+    position: relative;
+    top: var(--header-height);
+}
 
-  .chats-area {
-    width: var(--chats-width);
-    background-color: var(--gray-1);
-  }
-
-  .messages-area {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% - (var(--chats-width) + var(--domens-width)));
-    background-color: var(--gray-0);
-  }
-
-  .messages {
-    height: calc(100% - 100px);
+input {
+    outline: none;
+    height: 30px;
     width: 100%;
-  }
+    background-color: var(--color-bg-0);
+    color: var(--color-2);
+    border-radius: 2px;
+    border: 0;
+    padding: 0 5px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+input::selection {
+    background-color: var(--color-bg-3);
+}
+
+input:focus,
+input.focus {
+    box-shadow: 0 0 10px 1px var(--color-fcs-glow);
+    outline: 2px solid var(--color-2);
+}
+
+.label-input {
+    display: block;
+    height: 0;
+    width: 100%;
+    font-size: 12px;
+    color: var(--color-2);
+    z-index: -1;
+    text-align: left;
+    position: relative;
+    transition: transform 100ms;
+}
+
+input:focus+.label-input,
+input.focus+.label-input-date-picker,
+.label-input-error {
+    transform: translateY(-20px);
+}
+
+input::placeholder {
+    font-size: smaller;
+    opacity: 0.6;
+}
+
+input:focus::placeholder,
+input.focus::placeholder {
+    visibility: hidden;
+}
+
+.input-invalid,
+.input-invalid:focus {
+    color: var(--color-err);
+    box-shadow: 0 0 10px 1px var(--color-err-glow);
+    outline: 2px solid var(--color-err);
+}
+
+.input-invalid::placeholder,
+.label-input-error {
+    color: var(--color-err);
+}
+
+button {
+    height: 30px;
+    border: 0;
+    border-radius: 4px;
+    background-color: var(--color-btn);
+    color: var(--color-bg);
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    font-family: inherit;
+}
+
+button:hover {
+    background-color: var(--color-bg-2);
+    color: var(--color-2);
+    outline: 2px solid var(--color-1);
+    transition: box-shadow 150ms;
+}
+
+button:active {
+    background-color: var(--color-bg);
+    color: var(--color-2);
+    outline: 2px solid var(--color-2);
+    box-shadow: 0 0 15px 5px var(--color-fcs-glow);
+}
+
+button:disabled {
+    background-color: var(--color-bg-2);
+    color: var(--color-bg);
+    pointer-events: none;
+}
+
+.btn-clear-icon {
+    background: none;
+    padding: 0;
+    height: fit-content;
+    color: var(--color-2);
+}
+
+.btn-clear-icon:hover,
+.btn-clear-icon:active {
+    background: none;
+    outline: none;
+    box-shadow: none;
+}
+
 
 </style>

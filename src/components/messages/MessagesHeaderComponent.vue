@@ -11,7 +11,7 @@
     .messages-header {
         height: var(--messages-header-height);
         width: 100%;
-        background-color: var(--gray-2);
+        background-color: var(--color-bg-1);
     }
 
 </style>

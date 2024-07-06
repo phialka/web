@@ -1,4 +1,3 @@
-import mockAuth from "./auth"
 import { users } from './data_base'
 
 
@@ -18,17 +17,17 @@ export function mockProfileCreate(requestBody) {
     localStorage.setItem('lastUserId', Number(localStorage.getItem('lastUserId')) + 1)
 
     users.push(record)
+    console.log(users)
+}
 
-    const response = {
-        auth_data: mockAuth({login: record.login, password: record.password}),
-        profile: {
-            user_id: record.user_id,
-            name: record.name,
-            description: record.description,
-            birthdate: record.birthdate,
-            photo: record.photo
-        }
+export function mockProfileGet(requestHeaders) {
+    const user = users.find((user) => requestHeaders.auth_data.token == user.auth_data.token)
+
+    return {
+        user_id: user.user_id,
+        name: user.name,
+        description: user.description,
+        birthdate: user.birthdate,
+        photo: user.photo
     }
-
-    return response
 }
