@@ -104,4 +104,8 @@ const flow = ref(['month', 'year', 'calendar'])
 
     --dp-font-family: "LXGW WenKai Mono TC", monospace;
 }
+
+.dp__overlay {
+    border-radius: 5px;
+}
 </style>

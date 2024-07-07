@@ -33,6 +33,11 @@ function signUp() {
 
 //================================= METHODS =================================
 
+function redirectPopover(event) {
+    event.preventDefault()
+    document.getElementById('popover-sign-up').hidePopover()
+    document.getElementById('popover-sign-in').showPopover()
+}
 
 
 //================================= CALLS =================================
@@ -87,7 +92,7 @@ function signUp() {
                     :class="profileValidator.login.$errors[0] ? 'label-input-error' : ''"
                 >{{
                     profileValidator.login.$errors[0] ? profileValidator.login.$errors[0].$message : 'Login'
-                }}</label>
+                    }}</label>
             </div>
             <div class="container-input">
                 <input
@@ -102,10 +107,13 @@ function signUp() {
                     :class="profileValidator.password.$errors[0] ? 'label-input-error' : ''"
                 >{{
                     profileValidator.password.$errors[0] ? profileValidator.password.$errors[0].$message : 'Password'
-                }}</label>
+                    }}</label>
             </div>
             <div class="container-btns-form">
-                <button class="btn-redirect-form-sign-in">Sign in</button>
+                <button
+                    class="btn-redirect-form-sign-in"
+                    @click="redirectPopover"
+                >Sign in</button>
                 <button
                     class="btn-submit-form-sign-up"
                     @click="signUp"

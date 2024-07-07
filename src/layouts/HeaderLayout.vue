@@ -24,11 +24,12 @@ function signOut() {
 
 <template>
   <header>
-    <div class="menu">
+    <button class="menu btn-clear-icon" popovertarget="menu-popover">
       <div class="menu-line"></div>
       <div class="menu-line"></div>
       <div class="menu-line"></div>
-    </div>
+    </button>
+    <div id="menu-popover" popover></div>
     <span class="title title-header">
       Phialka
     </span>
@@ -36,7 +37,7 @@ function signOut() {
       <img
         class="photo-profile"
         v-if="storeAuth.profile"
-        :src="storeAuth.profile.photo ? storeAuth.profile.photo.download_id : 'https://cdn-icons-png.flaticon.com/512/4794/4794936.png'"
+        :src="storeAuth.profile.photo ? storeAuth.profile.photo.download_id : 'https://forum-ru-cdn.warthunder.com/optimized/3X/a/f/af62d76a2d92797df0711e6a94d319490936f3a1_2_1000x1000.jpeg'"
         @click="signOut"
       >
       <button
@@ -81,7 +82,7 @@ header {
 
 .menu {
   grid-area: menu;
-  height: calc(0.5 * var(--header-height));
+  height: calc(0.5 * var(--header-height)) !important;
   width: calc(0.5 * var(--header-height));
   display: flex;
   flex-flow: column nowrap;
@@ -94,6 +95,39 @@ header {
   border-radius: 1px;
   width: 100%;
   background-color: var(--color-2);
+}
+
+#menu-popover:popover-open {
+  margin: 0;
+  transform: translateX(0);
+
+}
+
+#menu-popover::backdrop {
+  background-color: transparent;
+  backdrop-filter: none;
+}
+
+#menu-popover {
+  margin: 0;
+  top: var(--header-height);
+  height: calc(100% - var(--header-height));
+  width: var(--menu-width);
+  border: 0;
+  border-radius: 0;
+  background-color: var(--color-bg-0);
+  transform: translateX(-100%);
+
+  transition:
+    transform 300ms,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+@starting-style {
+  #menu-popover:popover-open {
+    transform: translateX(-100%);
+  }
 }
 
 .title-header {

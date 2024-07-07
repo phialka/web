@@ -3,17 +3,22 @@ import { computed, provide } from 'vue';
 import HeaderLayout from '@/layouts/HeaderLayout.vue';
 import { useVuelidate } from '@vuelidate/core'
 import { helpers, required, minLength, maxLength } from '@vuelidate/validators';
-import { RouterView } from 'vue-router';
+import { useRouter, RouterView } from 'vue-router';
 import { useStore } from './store/store';
 
 
 //================================= VAR DEFINITION =================================
+
+const router = useRouter()
+router.push('messages/2323')
 
 const store = useStore()
 const profileForm = store.profileForm
 const style = {
 
     '--header-height': '70px',
+
+    '--menu-width': '25%',
 
     '--domens-width': '100px',
     '--chats-width': '200px',
