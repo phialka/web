@@ -11,10 +11,23 @@ const storeAuth = useStoreAuth()
 const isOpenSignIn = ref(false)
 const isOpenSignUp = ref(false)
 
+const menuPopover = ref()
+const menuButton = ref()
+
 
 
 function signOut() {
   useSignOut(storeAuth)
+}
+
+function onOpenMenu() {
+  if (menuPopover.value && menuButton.value && !menuPopover.value.matches(':popover-open')) {
+    menuButton.value.classList.add('active')
+  }
+  else {
+    menuButton.value.classList.remove('active')
+    console.log(menuButton.value)
+  }
 }
 
 
@@ -24,12 +37,22 @@ function signOut() {
 
 <template>
   <header>
-    <button class="menu btn-clear-icon" popovertarget="menu-popover">
+    <button
+      class="btn-menu btn-clear-icon"
+      ref="menuButton"
+      popovertarget="menu-popover"
+      @click="onOpenMenu"
+    >
+      <div class="menu-line"></div>
       <div class="menu-line"></div>
       <div class="menu-line"></div>
       <div class="menu-line"></div>
     </button>
-    <div id="menu-popover" popover></div>
+    <div
+      id="menu-popover"
+      ref="menuPopover"
+      popover
+    ></div>
     <span class="title title-header">
       Phialka
     </span>
@@ -80,7 +103,7 @@ header {
   box-shadow: 0 1px 8px 0 var(--color-shadow)
 }
 
-.menu {
+.btn-menu {
   grid-area: menu;
   height: calc(0.5 * var(--header-height)) !important;
   width: calc(0.5 * var(--header-height));
@@ -95,12 +118,33 @@ header {
   border-radius: 1px;
   width: 100%;
   background-color: var(--color-2);
+  transition: transform 400ms;
+}
+
+.menu-line:nth-child(2) {
+  position: absolute;
+  width: calc(0.5 * var(--header-height));;
+}
+
+.btn-menu.active .menu-line:nth-child(1) {
+  transform: scale(0);
+}
+
+.btn-menu.active .menu-line:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+.btn-menu.active .menu-line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.btn-menu.active .menu-line:nth-child(4) {
+  transform: scale(0);
 }
 
 #menu-popover:popover-open {
   margin: 0;
   transform: translateX(0);
-
 }
 
 #menu-popover::backdrop {
