@@ -1,7 +1,7 @@
 import { users } from './data_base'
 
 
-export function mockProfileCreate(requestBody) {
+export function createMockProfile(requestBody) {
 
     const record = {
         user_id: localStorage.getItem('lastUserId'),
@@ -20,7 +20,7 @@ export function mockProfileCreate(requestBody) {
     console.log(users)
 }
 
-export function mockProfileGet(requestHeaders) {
+export function getMockProfile(requestHeaders) {
     const user = users.find((user) => requestHeaders.auth_data.token == user.auth_data.token)
 
     return {

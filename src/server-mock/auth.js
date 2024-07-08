@@ -1,6 +1,6 @@
 import { users } from './data_base'
 
-export function mockAuth(requestBody) {
+export function authMock(requestBody) {
     const user_i = users.findIndex((user) => requestBody.login == user.login)
     const user = users[user_i]
 
@@ -24,10 +24,10 @@ export function mockAuth(requestBody) {
     }
 }
 
-export function mockAuthRefresh(requestBody) {
+export function authMockRefresh(requestBody) {
     const user = users.find((user) => requestBody.refresh == user.auth_data.refresh)
     if (user) {
-        return mockAuth({login: user.login, password: user.password})
+        return authMock({login: user.login, password: user.password})
     }
     else {
         console.error('401 - Ошибка аутентификации')

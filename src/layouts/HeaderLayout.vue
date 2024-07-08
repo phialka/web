@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useSignOut } from '@/composables/profile';
 import SignInComponent from '@/components/SignInComponent.vue';
 import SignUpComponent from '@/components/SignUpComponent.vue';
@@ -14,22 +14,43 @@ const isOpenSignUp = ref(false)
 const menuPopover = ref()
 const menuButton = ref()
 
+const isMounted = ref(false)
+
 
 
 function signOut() {
   useSignOut(storeAuth)
 }
 
-function onOpenMenu() {
-  if (menuPopover.value && menuButton.value && !menuPopover.value.matches(':popover-open')) {
-    menuButton.value.classList.add('active')
-  }
-  else {
-    menuButton.value.classList.remove('active')
-    console.log(menuButton.value)
+function onOpenMenu(event) {
+  if (isMounted.value) {
+    const classList = event.target.classList
+    const isBtnClick = classList.contains('btn-menu') || classList.contains('menu-line')
+
+    if (isBtnClick) {
+      if (!menuPopover.value.checkVisibility()) {
+        menuButton.value.classList.add('active')
+      }
+      else {
+        menuButton.value.classList.remove('active')
+      }
+    }
+    else if (!classList.contains('menu-popover')) {
+      menuButton.value.classList.remove('active')
+    }
   }
 }
 
+window.addEventListener('click', onOpenMenu)
+
+
+onMounted(() => {
+  isMounted.value = true
+})
+
+onUnmounted(() => {
+  isMounted.value = false
+})
 
 
 </script>
@@ -41,7 +62,6 @@ function onOpenMenu() {
       class="btn-menu btn-clear-icon"
       ref="menuButton"
       popovertarget="menu-popover"
-      @click="onOpenMenu"
     >
       <div class="menu-line"></div>
       <div class="menu-line"></div>
@@ -50,6 +70,7 @@ function onOpenMenu() {
     </button>
     <div
       id="menu-popover"
+      class="menu-popover"
       ref="menuPopover"
       popover
     ></div>
@@ -100,6 +121,7 @@ header {
   grid-template-columns: calc(1.5 * var(--header-height)) 1fr calc(1.5 * var(--header-height));
   align-items: center;
   justify-items: center;
+  z-index: 100;
   box-shadow: 0 1px 8px 0 var(--color-shadow)
 }
 
@@ -160,6 +182,8 @@ header {
   border: 0;
   border-radius: 0;
   background-color: var(--color-bg-0);
+  /* box-shadow: 2px 0 8px 0 var(--color-shadow); */
+  z-index: 99;
   transform: translateX(-100%);
 
   transition:
@@ -177,7 +201,8 @@ header {
 .title-header {
   grid-area: title;
   color: var(--color-2);
-  font-size: 40px;
+  font-size: calc(0.5 * var(--header-height));
+  height: 1em;
   justify-self: start;
   margin: 0 20px;
   user-select: none;
@@ -201,8 +226,8 @@ header {
   height: calc(0.8 * var(--header-height));
   width: calc(0.8 * var(--header-height));
   border-radius: 100%;
-  outline: 3px solid var(--color-2);
-  outline-offset: -3px;
+  outline: 2px solid var(--color-2);
+  outline-offset: -2px;
   overflow: hidden;
 }
 

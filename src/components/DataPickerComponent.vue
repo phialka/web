@@ -102,7 +102,7 @@ const flow = ref(['month', 'year', 'calendar'])
     --dp-range-between-dates-text-color: var(--dp-hover-text-color, #fff) !important;
     --dp-range-between-border-color: var(--dp-hover-color, #fff) !important;
 
-    --dp-font-family: "LXGW WenKai Mono TC", monospace;
+    --dp-font-family: var(--font-family);
 }
 
 .dp__overlay {

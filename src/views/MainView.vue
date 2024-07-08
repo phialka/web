@@ -13,8 +13,10 @@ import { RouterView } from 'vue-router';
 
 <style>
 main {
-    grid-area: main;
     display: flex;
-    background-color: var(--color-bg-3);
+    position: relative;
+    top: var(--header-height);
+    height: calc(100% - var(--header-height));
+    background-color: var(--color-bg-2);
 }
 </style>

@@ -10,7 +10,7 @@ import { useStore } from './store/store';
 //================================= VAR DEFINITION =================================
 
 const router = useRouter()
-router.push('messages/2323')
+router
 
 const store = useStore()
 const profileForm = store.profileForm
@@ -20,14 +20,17 @@ const style = {
 
     '--menu-width': '25%',
 
-    '--domens-width': '100px',
-    '--chats-width': '200px',
+    '--aside-messages-width': '400px',
+    '--domens-width': '120px',
+    '--chats-width': '60%',
 
     '--messages-header-height': '60px',
     '--messages-footer-height': '50px',
 
+    '--font-family': '"Comfortaa", sans-serif',
+
     '--color-bg': 'rgb(5, 5, 5)',
-    '--color-bg-0': 'rgb(20, 20, 20)',
+    '--color-bg-0': 'rgb(25, 25, 25)',
     '--color-bg-1': 'rgb(30, 30, 30)',
     '--color-bg-2': 'rgb(50, 50, 50)',
     '--color-bg-3': 'rgb(80, 80, 80)',
@@ -46,9 +49,8 @@ const style = {
     '--color-err-glow': 'rgba(240, 30, 30, 0.6)',
     '--color-shadow': 'rgba(5, 5, 5, 0.6)',
 
-    
-}
 
+}
 
 //================================= VALIDATION =================================
 
@@ -84,20 +86,12 @@ provide('profileValidator', profileValidator)
 <template>
     <div :style="style">
         <header-layout></header-layout>
-        <aside></aside>
-        <router-view/>
+        <router-view />
     </div>
 </template>
 
 
 <style>
-
-:root {
-    font-family: "LXGW WenKai Mono TC", monospace;
-    font-weight: 400;
-    font-style: normal;
-}
-
 body {
     margin: 0 0;
     overflow: hidden;
@@ -106,20 +100,10 @@ body {
 #app>div {
     height: 100vh;
     width: 100vw;
-    display: grid;
-    grid-template-areas: 'header header' 'aside main';
-    grid-template-columns: 20% 1fr;
-    grid-template-rows: var(--header-height) 1fr;
-}
-
-header {
-    grid-area: header;
-}
-
-aside {
-    grid-area: aside;
-    display: flex;
-    background-color: var(--color-bg-2);
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-style: normal;
+    -webkit-tap-highlight-color: transparent;
 }
 
 [popover] {
@@ -243,6 +227,4 @@ button:disabled {
     outline: none;
     box-shadow: none;
 }
-
-
 </style>

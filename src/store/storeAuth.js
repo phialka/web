@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { mockProfileGet, mockProfileCreate } from "@/server-mock/profile";
-import { mockAuth, mockAuthRefresh } from "@/server-mock/auth";
+import { getMockProfile, createMockProfile } from "@/server-mock/profile";
+import { authMock, authMockRefresh } from "@/server-mock/auth";
 
 export const useStoreAuth = defineStore("storeAuth", () => {
 
@@ -19,19 +19,19 @@ export const useStoreAuth = defineStore("storeAuth", () => {
   //================================= ACTIONS =================================
 
   async function auth(requestBody) {
-    authJWT.value = mockAuth(requestBody);
+    authJWT.value = authMock(requestBody);
   }
 
   async function authRefresh(requestBody) {
-    authJWT.value = mockAuthRefresh(requestBody);
+    authJWT.value = authMockRefresh(requestBody);
   }
 
   async function getProfileByJWT(requestHeaders) {
-    profile.value = mockProfileGet(requestHeaders);
+    profile.value = getMockProfile(requestHeaders);
   }
 
   async function createProfile(requestBody) {
-    mockProfileCreate(requestBody);
+    createMockProfile(requestBody);
   }
 
 
