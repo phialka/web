@@ -15,7 +15,7 @@ const flow = ref(['month', 'year', 'calendar'])
     <vue-date-picker
         v-model="valueDataPicker"
         :enable-time-picker="false"
-        :ui="{ menu: 'menu-date-picker' }"
+        :ui="{ menu: 'menu date-picker' }"
         :flow="flow"
         :hide-navigation="['month', 'year']"
         :transitions="false"
@@ -25,7 +25,7 @@ const flow = ref(['month', 'year', 'calendar'])
         dark
     >
         <template #dp-input="{ value, onInput, onEnter, onTab, onClear, onBlur, onKeypress, onPaste, isMenuOpen }">
-            <div class="container-input data-picker">
+            <div class="container input data-picker">
                 <input
                     type="text"
                     placeholder="Enter your birth date"
@@ -40,7 +40,7 @@ const flow = ref(['month', 'year', 'calendar'])
                     @keypress="onKeypress"
                     @paste="onPaste"
                 />
-                <label class="label-input label-input-date-picker">Birthdate</label>
+                <label class="label input date-picker">Birthdate</label>
             </div>
         </template>
     </vue-date-picker>
@@ -48,15 +48,15 @@ const flow = ref(['month', 'year', 'calendar'])
 
 
 <style>
-.menu-date-picker button,
-.menu-date-picker button:hover,
-.menu-date-picker button:active {
+.menu.date-picker button,
+.menu.date-picker button:hover,
+.menu.date-picker button:active {
     outline: 0 !important;
     box-shadow: none !important;
     background-color: transparent;
 }
 
-.menu-date-picker .dp__month_year_select:hover {
+.menu.date-picker .dp__month_year_select:hover {
     background-color: var(--color-bg-2) !important;
 }
 
@@ -65,7 +65,7 @@ const flow = ref(['month', 'year', 'calendar'])
     justify-content: center;
 }
 
-.container-input.data-picker {
+.container.input.data-picker {
     width: 100% !important;
 }
 

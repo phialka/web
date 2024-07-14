@@ -28,27 +28,27 @@ async function createChannel() {
 
 
 <template>
-    <div class="new-channel">
-        <form id="new-channel-form" @submit.prevent="createChannel">
-            <span class="title title-form">
+    <div class="container form new-channel">
+        <form id="form-new-channel" @submit.prevent="createChannel">
+            <span class="title form new-channel">
                 New Channel
             </span>
-            <div class="container-input">
+            <div class="container input">
                 <input
-                    :class="false ? 'input-invalid' : ''"
+                    :class="false ? 'invalid' : ''"
                     type="text"
                     placeholder="Enter channel title"
                     v-model="store.channelForm.title"
                 >
                 <label
-                    class="label-input"
+                    class="label input"
                     :class="false ? 'label-input-error' : ''"
                 >{{ false ? '' : 'Title'
                     }}</label>
             </div>
-            <div class="container-input">
+            <div class="container input">
                 <textarea
-                    :class="false ? 'input-invalid' : ''"
+                    :class="false ? 'invalid' : ''"
                     type="text"
                     placeholder="Enter channel description"
                     :maxlength="maxLength"
@@ -57,18 +57,18 @@ async function createChannel() {
                 </textarea>
                 <span class="sym-counter">{{ `${store.channelForm.description.length}/${maxLength}` }}</span>
                 <label
-                    class="label-input"
-                    :class="false ? 'label-input-error' : ''"
+                    class="label input"
+                    :class="false ? 'error' : ''"
                 >{{ false ? '' : 'Description'
                     }}</label>
             </div>
-            <div class="container-btns-form">
+            <div class="container buttons">
                 <button
-                    class="btn-new-channel-cancel btn-delete"
+                    class="button new-channel cancel"
                     @click.prevent="router.back"
                 >Cancel</button>
                 <button
-                    class="btn-new-channel-create"
+                    class="button new-channel create"
                 >Create</button>
             </div>
         </form>
@@ -77,7 +77,7 @@ async function createChannel() {
 
 
 <style>
-.new-channel {
+.container.form.new-channel {
     background-color: var(--color-bg-1);
     width: 100%;
     height: 100%;
@@ -85,23 +85,23 @@ async function createChannel() {
     align-items: center;
 }
 
-#new-channel-form {
+#form-new-channel {
     height: 380px;
     width: 100%;
 }
 
-#new-channel-form .container-input {
+#form-new-channel .container.input {
     width: 100%;
 }
 
-#new-channel-form .container-input>input,
-#new-channel-form .container-input>textarea,
-#new-channel-form .container-input>label,
-#new-channel-form .container-btns-form {
+#form-new-channel .container.input>input,
+#form-new-channel .container.input>textarea,
+#form-new-channel .container.input>label,
+#form-new-channel .container.buttons {
     width: 250px;
 }
 
-#new-channel-form .container-input>textarea {
+#form-new-channel .container.input>textarea {
     height: calc(30px * 5);
 }
 

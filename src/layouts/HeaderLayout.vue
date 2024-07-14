@@ -4,9 +4,13 @@ import { useSignOut } from '@/composables/profile';
 import SignInComponent from '@/components/SignInComponent.vue';
 import SignUpComponent from '@/components/SignUpComponent.vue';
 import { useStoreAuth } from '@/store/storeAuth';
+import { useStoreMessages } from '@/store/storeMessages';
+import { useStore } from '@/store/store';
 
 
 
+const store = useStore()
+const storeMessages = useStoreMessages()
 const storeAuth = useStoreAuth()
 const isOpenSignIn = ref(false)
 const isOpenSignUp = ref(false)
@@ -20,12 +24,16 @@ const isMounted = ref(false)
 
 function signOut() {
   useSignOut(storeAuth)
+  storeMessages.servers = []
+  storeMessages.channels = []
+  store.choosenServer = ''
+  store.choosenChannel = ''
 }
 
 function onOpenMenu(event) {
   if (isMounted.value) {
     const classList = event.target.classList
-    const isBtnClick = classList.contains('btn-menu') || classList.contains('menu-line')
+    const isBtnClick = (classList.contains('button') && classList.contains('menu')) || (classList.contains('line') && classList.contains('menu'))
 
     if (isBtnClick) {
       if (!menuPopover.value.checkVisibility()) {
@@ -57,35 +65,35 @@ onUnmounted(() => {
 
 
 <template>
-  <header>
+  <header class="header">
     <button
-      class="btn-menu btn-clear-icon"
+      class="button menu button-clear-icon"
       ref="menuButton"
       popovertarget="menu-popover"
     >
-      <div class="menu-line"></div>
-      <div class="menu-line"></div>
-      <div class="menu-line"></div>
-      <div class="menu-line"></div>
+      <div class="line menu icon"></div>
+      <div class="line menu icon"></div>
+      <div class="line menu icon"></div>
+      <div class="line menu icon"></div>
     </button>
     <div
       id="menu-popover"
-      class="menu-popover"
+      class="menu popover"
       ref="menuPopover"
       popover
     ></div>
-    <span class="title title-header">
+    <span class="title">
       Phialka
     </span>
-    <div class="container-profile">
+    <div class="container profile">
       <img
-        class="photo-profile"
+        class="image profile"
         v-if="storeAuth.profile"
         :src="storeAuth.profile.photo ? storeAuth.profile.photo.download_id : 'https://forum-ru-cdn.warthunder.com/optimized/3X/a/f/af62d76a2d92797df0711e6a94d319490936f3a1_2_1000x1000.jpeg'"
         @click="signOut"
       >
       <button
-        class="btn-sign-in"
+        class="button sign-in"
         v-if="!storeAuth.profile"
         popovertarget="popover-sign-in"
       >
@@ -111,7 +119,7 @@ onUnmounted(() => {
 
 
 <style>
-header {
+.header {
   background-color: var(--color-bg-0);
   position: fixed;
   width: 100vw;
@@ -125,7 +133,7 @@ header {
   box-shadow: 0 1px 8px 0 var(--color-shadow)
 }
 
-.btn-menu {
+.header .button.menu {
   grid-area: menu;
   height: calc(0.5 * var(--header-height)) !important;
   width: calc(0.5 * var(--header-height));
@@ -135,7 +143,7 @@ header {
   cursor: pointer;
 }
 
-.menu-line {
+.header .button.menu .line {
   height: 3px;
   border-radius: 1px;
   width: 100%;
@@ -143,24 +151,24 @@ header {
   transition: transform 400ms;
 }
 
-.menu-line:nth-child(2) {
+.header .button.menu .line:nth-child(2) {
   position: absolute;
   width: calc(0.5 * var(--header-height));;
 }
 
-.btn-menu.active .menu-line:nth-child(1) {
+.header .button.menu.active .line:nth-child(1) {
   transform: scale(0);
 }
 
-.btn-menu.active .menu-line:nth-child(2) {
+.header .button.menu.active .line:nth-child(2) {
   transform: rotate(45deg);
 }
 
-.btn-menu.active .menu-line:nth-child(3) {
+.header .button.menu.active .line:nth-child(3) {
   transform: rotate(-45deg);
 }
 
-.btn-menu.active .menu-line:nth-child(4) {
+.header .button.menu.active .line:nth-child(4) {
   transform: scale(0);
 }
 
@@ -198,7 +206,7 @@ header {
   }
 }
 
-.title-header {
+.header .title {
   grid-area: title;
   color: var(--color-2);
   font-size: calc(0.5 * var(--header-height));
@@ -208,7 +216,7 @@ header {
   user-select: none;
 }
 
-.container-profile {
+.header .container.profile {
   grid-area: profile;
   cursor: pointer;
   height: calc(0.8 * var(--header-height));
@@ -217,12 +225,12 @@ header {
   user-select: none;
 }
 
-.btn-sign-in {
+.header .button.sign-in {
   text-align: center;
   cursor: pointer;
 }
 
-.photo-profile {
+.header .image.profile {
   height: calc(0.8 * var(--header-height));
   width: calc(0.8 * var(--header-height));
   border-radius: 100%;

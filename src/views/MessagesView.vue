@@ -7,8 +7,10 @@ import 'custom-vue-scrollbar/dist/style.css';
 import { useRouter } from 'vue-router';
 import { useStore } from '@/store/store';
 import { useGetServers, useGetChannels } from '@/composables/servers';
+import { useStoreAuth } from '@/store/storeAuth';
 
 const store = useStore()
+const storeAuth = useStoreAuth()
 const storeMessages = useStoreMessages()
 const router = useRouter()
 
@@ -27,27 +29,39 @@ async function chooseChannel(channel_id) {
 }
 
 setInterval(() => {
-    useGetServers(storeMessages)
-    useGetChannels({ server_id: store.choosenServer }, storeMessages)
+    if (storeAuth.authJWT) {
+        useGetServers(storeMessages).catch((error) => {
+            console.error(error)
+            storeMessages.servers = []
+        })
+        useGetChannels({ server_id: store.choosenServer }, storeMessages).catch((error) => {
+            console.error(error)
+            storeMessages.channels = []
+        })
+    } else {
+        storeMessages.servers = []
+        storeMessages.channels = []
+    }
 }, 5000)
 
 </script>
 
 
 <template>
-    <div class="view-messages">
-        <aside class="aside-messages">
+    <div class="view messages">
+        <aside class="aside messages">
             <custom-scrollbar
                 :style="{ height: '100%' }"
                 :wrapper-style="{ height: '100%' }"
                 :content-style="{ overflow: 'hidden' }"
-                wrapper-class="section-servers-wrapper"
-                content-class="section-servers-content"
+                wrapper-class="section servers wrapper"
+                content-class="section servers content"
                 direction="vertical"
             >
                 <button
-                    class="btn-create-server"
+                    class="button servers create"
                     @click="router.push({ name: 'new-server' })"
+                    v-if="storeAuth.authJWT"
                 >
                     <span>+</span>
                 </button>
@@ -63,8 +77,8 @@ setInterval(() => {
                 :style="{ height: '100%' }"
                 :wrapper-style="{ height: '100%' }"
                 :content-style="{ overflow: 'hidden' }"
-                wrapper-class="section-chats-wrapper"
-                content-class="section-chats-content"
+                wrapper-class="section chats wrapper"
+                content-class="section chats content"
                 direction="vertical"
             >
                 <channel-component
@@ -74,16 +88,20 @@ setInterval(() => {
                     @channel-choose="(channel_id) => chooseChannel(channel_id)"
                     :class="(channel.channel_id == store.choosenChannel) ? 'active' : ''"
                 />
-                <button class="btn-create-channel" @click="router.push({ name: 'new-channel' })">+</button>
+                <button
+                    class="button chats create"
+                    @click="router.push({ name: 'new-channel' })"
+                    v-if="storeAuth.authJWT"
+                >+</button>
             </custom-scrollbar>
         </aside>
-        <section class="section-messages"></section>
+        <section class="section messages"></section>
     </div>
 </template>
 
 
 <style>
-.view-messages {
+.view.messages {
     height: 100%;
     width: 100%;
     display: flex;
@@ -91,19 +109,19 @@ setInterval(() => {
     align-items: stretch;
 }
 
-.aside-messages {
+.aside.messages {
     width: var(--aside-messages-width);
     display: flex;
     flex-flow: row nowrap;
 }
 
-.section-servers-wrapper {
+.section.servers.wrapper {
     width: var(--domains-width);
     height: 100%;
     background-color: var(--color-bg-0);
 }
 
-.section-servers-content {
+.section.servers.content {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -112,14 +130,14 @@ setInterval(() => {
     padding: 20px 0;
 }
 
-.btn-create-server {
+.button.servers.create {
     height: calc(0.4 * var(--domains-width));
     width: calc(0.5 * var(--domains-width) + 20px);
     margin: 10px 0;
     box-shadow: 0 0 10px 2px var(--color-shadow);
     border-radius: 8%;
     font-size: 40px;
-    transition: 
+    transition:
         transform 200ms,
         color 200ms,
         background-color 200ms;
@@ -127,18 +145,18 @@ setInterval(() => {
     color: var(--color-text-2);
 }
 
-.btn-create-server:hover {
+.button.servers.create:hover {
     outline: none;
     background-color: transparent;
     color: var(--color-text-3);
     transform: scale(1.08);
-    transition: 
+    transition:
         transform 200ms,
         color 200ms,
         background-color 200ms;
 }
 
-.btn-create-server:active {
+.button.servers.create:active {
     outline: none;
     box-shadow: 0 0 10px 2px var(--color-shadow);
     background-color: transparent;
@@ -146,17 +164,17 @@ setInterval(() => {
     transform: scale(0.9);
 }
 
-.btn-create-server > span {
+.button.servers.create>span {
     display: block;
     height: 1em;
 }
 
-.section-chats-wrapper {
+.section.chats.wrapper {
     width: calc(100% - var(--domains-width));
     background-color: var(--color-bg-1);
 }
 
-.section-chats-content {
+.section.chats.content {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -165,7 +183,7 @@ setInterval(() => {
     padding: 20px 0;
 }
 
-.btn-create-channel {
+.button.chats.create {
     position: absolute;
     bottom: 20px;
     left: calc(var(--aside-messages-width) - var(--domains-width) - 80px);
@@ -173,20 +191,20 @@ setInterval(() => {
     width: 60px;
     border-radius: 50%;
     font-size: 35px;
-    transition: 
+    transition:
         transform 200ms;
 }
 
-.btn-create-channel:hover {
+.button.chats.create:hover {
     background-color: var(--color-2);
     outline: none;
     color: var(--color-text-0);
     transform: scale(1.08);
-    transition: 
+    transition:
         transform 200ms;
 }
 
-.btn-create-channel:active {
+.button.chats.create:active {
     background-color: var(--color-2);
     outline: none;
     color: var(--color-text-0);
@@ -194,7 +212,7 @@ setInterval(() => {
     transform: scale(0.9);
 }
 
-.section-messages {
+.section.messages {
     flex: 1 0;
     background-color: var(--color-bg-3);
 }

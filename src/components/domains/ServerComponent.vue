@@ -9,21 +9,21 @@ const emit = defineEmits(['serverChoose'])
 
 <template>
     <div
-        class="server"
+        class="container server"
         :class="props.class"
         @click="emit('serverChoose', props.server.server_id)"
     >
         <img
             :src="props.server.logo ? props.server.logo.download_id : 'https://png.pngtree.com/png-clipart/20190925/original/pngtree-vector-server-icon-png-image_4974814.jpg'"
-            class="server-logo"
+            class="logo server"
         >
-        <span class="server-title">{{ props.server.title }}</span>
+        <span class="title server">{{ props.server.title }}</span>
     </div>
 </template>
 
 
 <style>
-.server {
+.container.server {
     height: calc(0.5 * var(--domains-width));
     width: calc(0.5 * var(--domains-width));
     display: flex;
@@ -39,32 +39,32 @@ const emit = defineEmits(['serverChoose'])
         transform 200ms,
         background-color 200ms;
 }
-.server:hover {
+.container.server:hover {
     transform: scale(1.15);
 }
 
-.server:active {
+.container.server:active {
     transform: scale(0.75);
 }
 
-.server.active {
+.container.server.active {
     background-color: var(--color-2);
     transform: scale(0.95);
 }
 
-.server.active:hover {
+.container.server.active:hover {
     background-color: var(--color-2);
     transform: scale(0.95);
 }
 
 
-.server-logo {
+.logo.server {
     width: calc(0.3 * var(--domains-width));
     height: calc(0.3 * var(--domains-width));
     border-radius: 50%;
 }
 
-.server-title {
+.title.server {
     width: calc(0.5 * var(--domains-width));
     height: 1em;
     font-size: 10px;
@@ -78,7 +78,7 @@ const emit = defineEmits(['serverChoose'])
     transition: color 200ms;
 }
 
-.server.active .server-title {
+.container.server.active .title.server {
     color: var(--color-text-0);
 }
 </style>

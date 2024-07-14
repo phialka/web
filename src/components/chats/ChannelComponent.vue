@@ -8,19 +8,19 @@ const emit = defineEmits(['channel-choose'])
 
 
 <template>
-    <div class="channel" @click="emit('channel-choose', props.channel.channel_id)">
+    <div class="container channel" @click="emit('channel-choose', props.channel.channel_id)">
         <img
             :src="props.channel.logo ? props.channel.logo.download_id : 'https://png.pngtree.com/png-clipart/20190925/original/pngtree-vector-server-icon-png-image_4974814.jpg'"
-            class="channel-logo"
+            class="logo channel"
         >
-        <span class="channel-title">{{ props.channel.title }}</span>
-        <span class="last-message">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita error laborum maxime quos eos, tempore reiciendis. Laborum unde numquam dolores voluptatum cumque facilis ut, atque, vel commodi reprehenderit saepe praesentium!</span>
+        <span class="title channel">{{ props.channel.title }}</span>
+        <span class="message last">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita error laborum maxime quos eos, tempore reiciendis. Laborum unde numquam dolores voluptatum cumque facilis ut, atque, vel commodi reprehenderit saepe praesentium!</span>
     </div>
 </template>
 
 
 <style>
-.channel {
+.container.channel {
     width: calc(100% - 30px);
     height: calc(0.5 * var(--domains-width) + 20px);
     overflow: hidden;
@@ -37,27 +37,27 @@ const emit = defineEmits(['channel-choose'])
         transform 200ms;
 }
 
-.channel:hover {
+.container.channel:hover {
     transform: scale(1.03);
 }
 
-.channel:active {
+.container.channel:active {
     transform: scale(0.85);
 }
 
-.channel.active {
+.container.channel.active {
     background-color: var(--color-2);
     transform: scale(0.97);
 }
 
-.channel-logo {
+.logo.channel {
     grid-area: logo;
     width: calc(0.35 * var(--domains-width));
     height: calc(0.35 * var(--domains-width));
     border-radius: 50%;
 }
 
-.channel-title {
+.title.channel {
     grid-area: title;
     align-self: self-end;
     justify-self: start;
@@ -69,11 +69,11 @@ const emit = defineEmits(['channel-choose'])
     overflow: hidden;
 }
 
-.channel.active .channel-title {
+.container.channel.active .title.channel {
     color: var(--color-text-0);
 }
 
-.last-message {
+.container.channel .message.last {
     grid-area: message;
     justify-self: start;
     text-overflow: ellipsis;

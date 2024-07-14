@@ -24,27 +24,30 @@ async function createServer() {
 
 
 <template>
-    <div class="new-server">
-        <form id="new-server-form" @submit.prevent="createServer">
-            <span class="title title-form">
+    <div class="container form new-server">
+        <form
+            id="form-new-server"
+            @submit.prevent="createServer"
+        >
+            <span class="title form new-server">
                 New Server
             </span>
-            <div class="container-input">
+            <div class="container input">
                 <input
-                    :class="false ? 'input-invalid' : ''"
+                    :class="false ? 'invalid' : ''"
                     type="text"
                     placeholder="Enter server title"
                     v-model="store.serverForm.title"
                 >
                 <label
-                    class="label-input"
-                    :class="false ? 'label-input-error' : ''"
+                    class="label input"
+                    :class="false ? 'error' : ''"
                 >{{ false ? '' : 'Title'
                     }}</label>
             </div>
-            <div class="container-input">
+            <div class="container input">
                 <textarea
-                    :class="false ? 'input-invalid' : ''"
+                    :class="false ? 'invalid' : ''"
                     type="text"
                     placeholder="Enter server description"
                     :maxlength="maxLength"
@@ -53,19 +56,17 @@ async function createServer() {
                 </textarea>
                 <span class="sym-counter">{{ `${store.serverForm.description.length}/${maxLength}` }}</span>
                 <label
-                    class="label-input"
-                    :class="false ? 'label-input-error' : ''"
+                    class="label input"
+                    :class="false ? 'error' : ''"
                 >{{ false ? '' : 'Description'
                     }}</label>
             </div>
-            <div class="container-btns-form">
+            <div class="container buttons">
                 <button
-                    class="btn-new-server-cancel btn-delete"
+                    class="button cancel new-server"
                     @click.prevent="router.back"
                 >Cancel</button>
-                <button
-                    class="btn-new-server-create"
-                >Create</button>
+                <button class="button create new-server">Create</button>
             </div>
         </form>
     </div>
@@ -73,7 +74,7 @@ async function createServer() {
 
 
 <style>
-.new-server {
+.container.form.new-server {
     background-color: var(--color-bg-1);
     width: 100%;
     height: 100%;
@@ -81,23 +82,23 @@ async function createServer() {
     align-items: center;
 }
 
-#new-server-form {
+#form-new-server {
     height: 380px;
     width: 100%;
 }
 
-#new-server-form .container-input {
+#form-new-server .container.input {
     width: 100%;
 }
 
-#new-server-form .container-input>input,
-#new-server-form .container-input>textarea,
-#new-server-form .container-input>label,
-#new-server-form .container-btns-form {
+#form-new-server .container.input>input,
+#form-new-server .container.input>textarea,
+#form-new-server .container.input>label,
+#form-new-server .container.buttons {
     width: 250px;
 }
 
-#new-server-form .container-input>textarea {
+#form-new-server .container.input>textarea {
     height: calc(30px * 5);
 }
 

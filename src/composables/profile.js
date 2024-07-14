@@ -2,7 +2,8 @@ export async function useSignIn(
   requestBody,
   profileValidator,
   storeAuth,
-  storeMessages
+  storeMessages,
+  store
 ) {
   try {
     const response = await storeAuth.auth(requestBody);
@@ -11,6 +12,7 @@ export async function useSignIn(
       document.getElementById("popover-sign-up").hidePopover();
       await storeAuth.getMyProfile();
       await storeMessages.getServers();
+      await storeMessages.getChannels({ server_id: store.choosenServer });
     } else {
       throw {
         message: "Wrong server response status code 500",

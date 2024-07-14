@@ -17,6 +17,7 @@ const store = useStore()
 const storeAuth = useStoreAuth()
 const storeMessages = useStoreMessages()
 const axios = inject('axios')
+
 const style = {
 
     '--header-height': '70px',
@@ -94,7 +95,16 @@ onMounted(() => {
                         }
                         else if (store.choosenServer) {
                             storeMessages.getChannels({ server_id: store.choosenServer })
+                            .catch((error) => {
+                                if (error.response.status == 403) {
+                                    store.choosenServer = ''
+                                    store.choosenChannel = ''
+                                }
+                            })
                         }
+                    })
+                    .catch((error) => {
+                        console.error(error)
                     })
             })
             .catch((error) => {
@@ -103,6 +113,8 @@ onMounted(() => {
             })
     } else {
         storeMessages.servers = []
+        store.choosenServer = ''
+        store.choosenChannel = ''
     }
 })
 
@@ -184,7 +196,7 @@ textarea:focus {
     outline: 2px solid var(--color-2);
 }
 
-.label-input {
+.label.input {
     display: block;
     height: 0;
     width: 100%;
@@ -197,10 +209,10 @@ textarea:focus {
     transition: transform 100ms;
 }
 
-input:focus+.label-input,
-textarea:focus~.label-input,
-input.focus+.label-input-date-picker,
-.label-input-error {
+input:focus+.label.input,
+textarea:focus~.label.input,
+input.focus+.label.input.date-picker,
+.label.input.error {
     transform: translateY(-20px);
 }
 
@@ -225,15 +237,15 @@ input.focus::placeholder {
     visibility: hidden;
 }
 
-.input-invalid,
-.input-invalid:focus {
+.input.invalid,
+.input.invalid:focus {
     color: var(--color-err);
     box-shadow: 0 0 10px 1px var(--color-err-glow);
     outline: 2px solid var(--color-err);
 }
 
-.input-invalid::placeholder,
-.label-input-error {
+.input.invalid::placeholder,
+.label.input.error {
     color: var(--color-err);
 }
 
@@ -269,42 +281,44 @@ button:disabled {
     pointer-events: none;
 }
 
-.btn-delete {
+.button.cancel {
     background-color: var(--color-btn-dlt);
 }
 
-.btn-delete:hover {
+.button.cancel:hover {
     color: var(--color-btn-dlt);
     outline-color: var(--color-btn-dlt);
+    background-color: transparent;
 }
 
-.btn-delete:active {
+.button.cancel:active {
     color: var(--color-btn-dlt);
     outline-color: var(--color-btn-dlt);
     box-shadow: 0 0 15px 5px var(--color-btn-dlt-glow);
+    background-color: transparent;
 }
 
-.btn-close {
+.button.close {
     position: absolute;
     right: 10px;
     top: 10px;
 }
 
-.btn-clear-icon {
+.button-clear-icon {
     background: none;
     padding: 0;
     height: fit-content;
     color: var(--color-2);
 }
 
-.btn-clear-icon:hover,
-.btn-clear-icon:active {
+.button-clear-icon:hover,
+.button-clear-icon:active {
     background: none;
     outline: none;
     box-shadow: none;
 }
 
-.title-form {
+.title.form {
     width: 100%;
     font-size: 25px;
     margin: 10px 0 0 0;
@@ -312,15 +326,15 @@ button:disabled {
     text-transform: uppercase;
 }
 
-.title-form,
-.container-input {
+.title.form,
+.container.input {
     display: flex;
     flex-flow: column-reverse;
     align-items: center;
     position: relative;
 }
 
-.container-btns-form {
+.container.buttons {
     display: flex;
     flex-flow: row;
     justify-content: space-between;
