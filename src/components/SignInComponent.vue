@@ -1,15 +1,17 @@
 <script setup>
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { useSignIn } from '@/composables/profile'
 import { useStore } from '@/store/store';
 import { useStoreAuth } from '@/store/storeAuth';
+import LoadingComponent from '@/components/LoadingComponent.vue'
+import { useStoreMessages } from '@/store/storeMessages';
 
 
 //================================= VAR DEFENITION =================================
 
-const storeAuth = useStoreAuth()
+
 const store = useStore()
-const profileForm = store.profileForm
+const loading = ref(false)
 
 //================================= VALIDATION =================================
 
@@ -18,8 +20,15 @@ const profileValidator = inject('profileValidator')
 
 //================================= SIGN IN =================================
 
-function signIn() {
-    useSignIn({ login: profileForm.login, password: profileForm.password }, profileValidator, storeAuth)
+async function signIn() {
+    loading.value = true
+    useSignIn({ username: store.profileForm.login, userpass: store.profileForm.password }, profileValidator, useStoreAuth(), useStoreMessages())
+        .catch((error) => {
+            console.error(error)
+        })
+        .finally(() => {
+            loading.value = false
+        })
 }
 
 function redirectPopover(event) {
@@ -51,7 +60,7 @@ function redirectPopover(event) {
                     :class="profileValidator.login.$errors[0] ? 'input-invalid' : ''"
                     type="text"
                     placeholder="Enter your login"
-                    v-model="profileForm.login"
+                    v-model="store.profileForm.login"
                 >
                 <label
                     class="label-input"
@@ -65,7 +74,7 @@ function redirectPopover(event) {
                     :class="profileValidator.password.$errors[0] ? 'input-invalid' : ''"
                     type="password"
                     placeholder="Enter your password"
-                    v-model="profileForm.password"
+                    v-model="store.profileForm.password"
                 >
                 <label
                     class="label-input"
@@ -80,9 +89,10 @@ function redirectPopover(event) {
                 >Sign up</button>
                 <button
                     class="btn-submit-form-sign-in"
-                    :disabled="Boolean(!profileForm.login || !profileForm.password)"
+                    :disabled="Boolean(!store.profileForm.login || !store.profileForm.password)"
                 >Sign in</button>
             </div>
+            <loading-component v-if="loading" />
         </form>
     </div>
 </template>
@@ -92,7 +102,6 @@ function redirectPopover(event) {
 .sign-in-content {
 
     --input-horizontal-pad: 4px;
-    --form-height: 250px;
     --button-margin: 20px;
 
     height: 250px;
@@ -102,48 +111,19 @@ function redirectPopover(event) {
 }
 
 #form-sign-in {
-    height: var(--form-height);
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
-
-.title-form {
-    width: 100%;
-    font-size: 25px;
-    margin: 10px 0 0 0;
-    color: var(--color-text-3);
-    text-transform: uppercase;
-}
-
-.title-form,
-.container-input {
-    display: flex;
-    flex-flow: column-reverse;
-    align-items: center;
-}
-
-.label-input {
-    width: calc(70% + 10px);
-}
-
-.container-input>input {
+    height: 100%;
     width: 100%;
 }
 
-.container-btns-form {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
+#form-sign-in .container-input {
     width: 70%;
-    margin-bottom: 15px;
+}
+
+#form-sign-in .container-input>input {
+    width: 100%;
+}
+
+#form-sign-in .container-btns-form {
+    width: 70%;
 }
 </style>

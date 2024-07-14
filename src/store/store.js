@@ -1,10 +1,14 @@
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
 
 export const useStore = defineStore("store", () => {
 
 
   //================================= STATE =================================
+
+  const choosenServer = ref()
+
+  const choosenChannel = ref()
 
   const profileForm = reactive({
     name: "",
@@ -14,6 +18,16 @@ export const useStore = defineStore("store", () => {
     login: "",
     password: "",
   });
+
+  const serverForm = reactive({
+    title: "",
+    description: "",
+  })
+
+  const channelForm = reactive({
+    title: "",
+    description: "",
+  })
 
 
   //================================= GETTERS =================================
@@ -31,9 +45,25 @@ export const useStore = defineStore("store", () => {
     profileForm.password = ''
   }
 
+  function serverFormReset() {
+    serverForm.title = '',
+    serverForm.description = ''
+  }
+
+  function channelFormReset() {
+    channelForm.title = '',
+    channelForm.description = ''
+  }
+
 
   return {
+    choosenServer,
+    choosenChannel,
     profileForm,
+    serverForm,
+    channelForm,
     profileFormReset,
+    serverFormReset,
+    channelFormReset
   };
 });

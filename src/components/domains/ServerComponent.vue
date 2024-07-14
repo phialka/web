@@ -24,8 +24,8 @@ const emit = defineEmits(['serverChoose'])
 
 <style>
 .server {
-    height: calc(0.5 * var(--domens-width));
-    width: calc(0.5 * var(--domens-width));
+    height: calc(0.5 * var(--domains-width));
+    width: calc(0.5 * var(--domains-width));
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -36,37 +36,46 @@ const emit = defineEmits(['serverChoose'])
     box-shadow: 0 0 10px 3px var(--color-shadow);
     cursor: pointer;
     transition:
-        /* box-shadow 200ms, */
         transform 200ms,
         background-color 200ms;
+}
+.server:hover {
+    transform: scale(1.15);
+}
+
+.server:active {
+    transform: scale(0.75);
 }
 
 .server.active {
     background-color: var(--color-2);
+    transform: scale(0.95);
 }
 
-.server:hover {
-    /* outline: 1px solid var(--color-2); */
-    transform: scale(1.08);
-    /* box-shadow: 0 0 5px 1px var(--color-fcs-glow); */
+.server.active:hover {
+    background-color: var(--color-2);
+    transform: scale(0.95);
 }
+
 
 .server-logo {
-    width: calc(0.3 * var(--domens-width));
-    height: calc(0.3 * var(--domens-width));
+    width: calc(0.3 * var(--domains-width));
+    height: calc(0.3 * var(--domains-width));
     border-radius: 50%;
 }
 
 .server-title {
-    width: calc(0.5 * var(--domens-width));
+    width: calc(0.5 * var(--domains-width));
     height: 1em;
     font-size: 10px;
     font-weight: bolder;
+    text-align: center;
     color: var(--color-text-3);
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 2px;
+    transition: color 200ms;
 }
 
 .server.active .server-title {

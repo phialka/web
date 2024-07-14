@@ -160,5 +160,50 @@ export const channels = [
       upload_at: "2024-07-08T19:18:35.435Z"
     },
     created_at: "2024-07-08T19:18:35.435Z"
-  }
+  },
+  {
+    channel_id: "2",
+    server_id: "0",
+    title: "best server channel",
+    description: "best server channel",
+    logo: {
+      file_id: "0",
+      download_id: "https://png.pngtree.com/png-clipart/20190925/original/pngtree-vector-server-icon-png-image_4974814.jpg",
+      size: 0,
+      hash: "string",
+      mime_type: "string",
+      upload_at: "2024-07-08T19:18:35.435Z"
+    },
+    created_at: "2024-07-08T19:18:35.435Z"
+  },
+  {
+    channel_id: "3",
+    server_id: "0",
+    title: "best server channel",
+    description: "best server channel",
+    logo: {
+      file_id: "0",
+      download_id: "https://png.pngtree.com/png-clipart/20190925/original/pngtree-vector-server-icon-png-image_4974814.jpg",
+      size: 0,
+      hash: "string",
+      mime_type: "string",
+      upload_at: "2024-07-08T19:18:35.435Z"
+    },
+    created_at: "2024-07-08T19:18:35.435Z"
+  },
+  {
+    channel_id: "4",
+    server_id: "0",
+    title: "best server channel",
+    description: "best server channel",
+    logo: {
+      file_id: "0",
+      download_id: "https://png.pngtree.com/png-clipart/20190925/original/pngtree-vector-server-icon-png-image_4974814.jpg",
+      size: 0,
+      hash: "string",
+      mime_type: "string",
+      upload_at: "2024-07-08T19:18:35.435Z"
+    },
+    created_at: "2024-07-08T19:18:35.435Z"
+  },
 ]

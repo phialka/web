@@ -1,10 +1,11 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, ref } from 'vue';
 import DataPickerComponent from './DataPickerComponent.vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { useStoreAuth } from '@/store/storeAuth';
 import { useSignUp } from '@/composables/profile';
 import { useStore } from '@/store/store';
+import LoadingComponent from './LoadingComponent.vue';
 
 
 //================================= VAR DEFENITION =================================
@@ -12,6 +13,7 @@ import { useStore } from '@/store/store';
 const storeAuth = useStoreAuth()
 const store = useStore()
 const profileForm = store.profileForm
+const loading = ref(false)
 
 
 //================================= PROPS PROVIDING =================================
@@ -25,9 +27,17 @@ const profileValidator = inject('profileValidator')
 
 //================================= SIGN UP =================================
 
-function signUp() {
+async function signUp() {
+    loading.value = true
     useSignUp(profileForm, profileValidator, storeAuth)
-    store.profileFormReset()
+        .catch((error) => {
+            console.log('ahahahah')
+            console.error(error)
+        })
+        .finally(function () {
+            loading.value = false
+            store.profileFormReset()
+        })
 }
 
 
@@ -92,7 +102,7 @@ function redirectPopover(event) {
                     :class="profileValidator.login.$errors[0] ? 'label-input-error' : ''"
                 >{{
                     profileValidator.login.$errors[0] ? profileValidator.login.$errors[0].$message : 'Login'
-                    }}</label>
+                }}</label>
             </div>
             <div class="container-input">
                 <input
@@ -107,7 +117,7 @@ function redirectPopover(event) {
                     :class="profileValidator.password.$errors[0] ? 'label-input-error' : ''"
                 >{{
                     profileValidator.password.$errors[0] ? profileValidator.password.$errors[0].$message : 'Password'
-                    }}</label>
+                }}</label>
             </div>
             <div class="container-btns-form">
                 <button
@@ -120,6 +130,7 @@ function redirectPopover(event) {
                     :disabled="Boolean(!profileForm.name || !profileForm.birthdate || !profileForm.login || !profileForm.password)"
                 >Sign up</button>
             </div>
+            <loading-component v-if="loading"/>
         </form>
     </div>
 </template>
@@ -133,13 +144,17 @@ function redirectPopover(event) {
 
 #form-sign-up {
     height: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
 }
 
-.container-input {
+#form-sign-up .container-input {
+    width: 70%;
+}
+
+#form-sign-up .container-input>input {
+    width: 100%;
+}
+
+#form-sign-up .container-btns-form {
     width: 70%;
 }
 </style>
