@@ -1,0 +1,24 @@
+:root {
+  /* colors */
+  --white: #fafafa;
+  --gray: #808080;
+  --black: #1a1a1a;
+  --accent-primary: #9938fa;
+  --accent-secondary: #ff3388;
+  --success: #1ff98c;
+  --danger: #ff6666;
+
+  --bg: var(--white);
+  --bg-negative: var(--black);
+  --text-light: var(--white);
+  --text: var(--gray);
+  --text-dark: var(--black);
+  --shadow: rgba(26, 26, 26, 0.05);
+
+  /* sizes */
+  --s: 3rem;
+  --m: 4rem;
+  --l: 5rem;
+
+  --plate-offset: 0.5rem;
+}
